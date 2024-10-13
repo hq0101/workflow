@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- sky_v1alpha1_workflow.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples
