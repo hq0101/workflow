@@ -17,8 +17,63 @@ limitations under the License.
 package v1alpha1
 
 import (
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+type WorkStatus string
+
+const (
+	WorkFlowStatusWaiting WorkStatus = "Waiting"
+	WorkFlowStatusRunning WorkStatus = "Running"
+	WorkFlowStatusSuccess WorkStatus = "Success"
+	WorkFlowStatusFailed  WorkStatus = "Failed"
+	WorkFlowStatusCancel  WorkStatus = "Cancel"
+	WorkFlowStatusPause   WorkStatus = "Pause"
+)
+
+type Step struct {
+	Name        string `json:"name"`
+	DisplayName string `json:"displayName,omitempty"`
+	Description string `json:"description,omitempty"`
+	Image       string `json:"image"`
+	Script      string `json:"script"`
+	Args        string `json:"args,omitempty"`
+}
+
+type Task struct {
+	Name         string           `json:"name"`
+	DisplayName  string           `json:"displayName,omitempty"`
+	Description  string           `json:"description,omitempty"`
+	Dependencies []string         `json:"dependencies,omitempty"`
+	Results      []TaskOutput     `json:"results,omitempty"`
+	Timeout      *metav1.Duration `json:"timeout,omitempty"`
+	Steps        []Step           `json:"steps"`
+}
+
+type TaskOutput struct {
+	Name        string `json:"name"`
+	Description string `json:"description,omitempty"`
+}
+
+type TaskStatus struct {
+	Name           string       `json:"name"`
+	PodName        string       `json:"podName"`
+	Message        string       `json:"message,omitempty"`
+	Status         v1.PodPhase  `json:"status"`
+	CompletionTime *metav1.Time `json:"completionTime,omitempty"`
+	Results        []*Output    `json:"results,omitempty"`
+}
+
+type Output struct {
+	Name  string `json:"name,omitempty"`
+	Value string `json:"value,omitempty"`
+}
+
+type Input struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
+}
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
@@ -28,14 +83,19 @@ type WorkflowSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of Workflow. Edit workflow_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	Inputs []Input `json:"inputs,omitempty"`
+	Tasks  []Task  `json:"tasks"`
 }
 
 // WorkflowStatus defines the observed state of Workflow
 type WorkflowStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
+	Status         WorkStatus            `json:"status"`
+	Message        string                `json:"message,omitempty"`
+	StartTime      *metav1.Time          `json:"startTime,omitempty"`
+	CompletionTime *metav1.Time          `json:"completionTime,omitempty"`
+	TaskStatus     map[string]TaskStatus `json:"taskStatus,omitempty"`
 }
 
 // +kubebuilder:object:root=true
@@ -57,6 +117,17 @@ type WorkflowList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []Workflow `json:"items"`
+}
+
+func (w *Workflow) ValidateUniqueTaskNames() bool {
+	taskNames := make(map[string]bool)
+	for _, task := range w.Spec.Tasks {
+		if taskNames[task.Name] {
+			return true
+		}
+		taskNames[task.Name] = true
+	}
+	return false
 }
 
 func init() {
