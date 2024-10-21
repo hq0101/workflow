@@ -14,8 +14,6 @@
 
 ### Web
 
-[Nice-DAG库](https://github.com/eBay/nice-dag)
-
 ![DAG](web/src/assets/dag.png)
 
 ## License
