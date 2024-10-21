@@ -30,3 +30,17 @@ node_modules/
 dist/
 .idea
 .vscode/*
+web/.vscode/*
+web/.idea
+web/node_modules/
+web/dist/
+web/dist-ssr
+web/npm-*.log*
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+*.tsbuildinfo
+
