@@ -1,9 +1,7 @@
 # web
 
-This template should help get you started developing with Vue 3 in Vite.
 
-基于[Nice-DAG库](https://github.com/eBay/nice-dag)实现的dag编辑器
-
+![DAG](src/assets/dag.png)
 
 ## Project Setup
 
