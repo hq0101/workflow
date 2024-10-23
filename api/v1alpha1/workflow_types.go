@@ -19,6 +19,11 @@ package v1alpha1
 import (
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"time"
+)
+
+const (
+	KindName = "workflow"
 )
 
 type WorkStatus string
@@ -46,9 +51,17 @@ type Task struct {
 	DisplayName  string           `json:"displayName,omitempty"`
 	Description  string           `json:"description,omitempty"`
 	Dependencies []string         `json:"dependencies,omitempty"`
-	Results      []TaskOutput     `json:"results,omitempty"`
+	Outputs      []TaskOutput     `json:"results,omitempty"`
 	Timeout      *metav1.Duration `json:"timeout,omitempty"`
 	Steps        []Step           `json:"steps"`
+}
+
+func (t *Task) GetTimeout() time.Duration {
+	if t.Timeout == nil {
+		return 60 * time.Minute
+	}
+
+	return t.Timeout.Duration
 }
 
 type TaskOutput struct {
