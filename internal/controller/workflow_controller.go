@@ -122,9 +122,9 @@ func (r *WorkflowReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		for _, containerStatus := range _pod.Status.ContainerStatuses {
 			if containerStatus.State.Terminated != nil {
 				if containerStatus.State.Terminated.Message != "" {
-					results := []*skyv1alpha1.Output{}
-					if _err = json.Unmarshal([]byte(containerStatus.State.Terminated.Message), &results); _err == nil {
-						status.Results = results
+					outputs := []*skyv1alpha1.Output{}
+					if _err = json.Unmarshal([]byte(containerStatus.State.Terminated.Message), &outputs); _err == nil {
+						status.Outputs = outputs
 					} else {
 						logger.Error(_err, "Failed to unmarshal results")
 					}

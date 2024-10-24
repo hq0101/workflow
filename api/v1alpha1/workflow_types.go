@@ -51,7 +51,7 @@ type Task struct {
 	DisplayName  string           `json:"displayName,omitempty"`
 	Description  string           `json:"description,omitempty"`
 	Dependencies []string         `json:"dependencies,omitempty"`
-	Outputs      []TaskOutput     `json:"results,omitempty"`
+	Outputs      []TaskOutput     `json:"outputs,omitempty"`
 	Timeout      *metav1.Duration `json:"timeout,omitempty"`
 	Steps        []Step           `json:"steps"`
 }
@@ -75,7 +75,7 @@ type TaskStatus struct {
 	Message        string       `json:"message,omitempty"`
 	Status         v1.PodPhase  `json:"status"`
 	CompletionTime *metav1.Time `json:"completionTime,omitempty"`
-	Results        []*Output    `json:"results,omitempty"`
+	Outputs        []*Output    `json:"outputs,omitempty"`
 }
 
 type Output struct {

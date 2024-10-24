@@ -45,7 +45,7 @@ func generatePod(ctx context.Context, task skyv1alpha1.Task, steps []skyv1alpha1
 	}
 
 	for _, taskStatus := range workFlow.Status.TaskStatus {
-		for _, output := range taskStatus.Results {
+		for _, output := range taskStatus.Outputs {
 			replacements = append(replacements, fmt.Sprintf("{{tasks.%s.outputs.%s}}", taskStatus.Name, output.Name), output.Value)
 		}
 	}
