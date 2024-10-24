@@ -5,14 +5,14 @@ Workflow是一个基于Kubernetes的工作流引擎和持续集成（CI）工具
 ![DAG](web/src/assets/workflow.png)
 
 
+### Web 
+
+![DAG](web/src/assets/dag.png)
+
+
 ### Prerequisites
 - go version v1.22.0+
 - docker version 17.03+.
 - kubectl version v1.11.3+.
 - Access to a Kubernetes v1.11.3+ cluster.
-
-### Web 
-
-![DAG](web/src/assets/dag.png)
-
 

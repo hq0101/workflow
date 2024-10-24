@@ -6,4 +6,79 @@ metadata:
     app.kubernetes.io/managed-by: kustomize
   name: workflow-sample
 spec:
-  # TODO(user): Add fields here
+  inputs:
+    - name: "input-1"
+      value: "hello"
+    - name: "input-2"
+      value: "world"
+  tasks:
+    - name: "task-1"
+      displayName: "task-1"
+      description: "task-1"
+      timeout: 10m
+      outputs:
+        - name: current-date-unix-timestamp
+          description: "current-date-unix-timestamp"
+        - name: current-date-human-readable
+          description: ""
+      steps:
+        - name: "step-1"
+          displayName: "step-1"
+          description: "step-1"
+          image: "ubuntu"
+          args: "{{inputs.input-1}} arg-2 参数3"
+          script: |
+            #!/usr/bin/env bash
+            echo "Hello from Bash!"
+            echo "第一个参数" $1
+            echo "第二个参数" $2
+            echo "第三个参数" $3
+            echo {{inputs.input-1}}
+            date +%s | tee /tmp/sky/outputs/current-date-unix-timestamp
+            sleep 10
+            date +%s | tee /tmp/sky/outputs/current-date-human-readable
+            sleep 10
+        - name: "step-2"
+          displayName: "step-2"
+          description: "step-2"
+          image: "python:3.10"
+          args: "参数1 {{inputs.input-1}} 参数3"
+          script: |
+            #!/usr/bin/env python3
+            import sys
+            print("Hello from Python!")
+            print("第一个参数: {}".format(sys.argv[1]))
+            print("第二个参数: {}".format(sys.argv[2]))
+            print("第三个参数: {}".format(sys.argv[3]))
+    - name: "task-2"
+      displayName: "task-2"
+      description: "task-2"
+      timeout: 1m
+      dependencies:
+        - "task-1"
+      steps:
+        - name: "step-1"
+          displayName: "step-2"
+          description: "step-2"
+          image: "node:18.18"
+          args: ""
+          script: |
+            #!/usr/bin/env node
+            console.log("Hello from Node!")
+    - name: "task-3"
+      displayName: "task-3"
+      description: "task-3"
+      timeout: 1m
+      dependencies:
+        - "task-1"
+      steps:
+        - name: "step-1"
+          displayName: "step-1"
+          description: "step-1"
+          image: "ubuntu"
+          args: "{{inputs.input-2}}"
+          script: |
+            #!/usr/bin/env bash
+            echo "Hello from Bash!"
+            echo "第一个参数" $1
+            echo {{tasks.task-1.outputs.current-date-human-readable}}
