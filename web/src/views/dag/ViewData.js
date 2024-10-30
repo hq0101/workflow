@@ -22,26 +22,27 @@ export const HierarchicalModel = [
     data: {
       label: 'Static Analysis',
     },
-    children: [
-      {
-        id: 'dependency-checker',
-        data: {
-          label: 'Dependency Checker',
-        },
-      },
-      {
-        id: 'oss-license-checker',
-        data: {
-          label: 'OSS License Checker',
-        },
-      },
-      {
-        id: 'sca',
-        data: {
-          label: 'SCA',
-        },
-      },
-    ],
+  },
+  {
+    id: 'dependency-checker',
+    data: {
+      label: 'Dependency Checker',
+    },
+    parentId: 'static-analysis'
+  },
+  {
+    id: 'oss-license-checker',
+    data: {
+      label: 'OSS License Checker',
+    },
+    parentId: 'static-analysis'
+  },
+  {
+    id: 'sca',
+    data: {
+      label: 'SCA',
+    },
+    parentId: 'static-analysis'
   },
   {
     id: 'artefact-analysis',
@@ -49,20 +50,20 @@ export const HierarchicalModel = [
     data: {
       label: 'Artefact Analysis',
     },
-    children: [
-      {
-        id: 'image-hardening',
-        data: {
-          label: 'Image Hardening',
-        },
-      },
-      {
-        id: 'image-Scan',
-        data: {
-          label: 'Image Scan',
-        },
-      },
-    ],
+  },
+  {
+    id: 'image-hardening',
+    data: {
+      label: 'Image Hardening',
+    },
+    parentId: 'artefact-analysis'
+  },
+  {
+    id: 'image-Scan',
+    data: {
+      label: 'Image Scan',
+    },
+    parentId: 'artefact-analysis'
   },
   {
     id: 'deploy',
@@ -70,14 +71,13 @@ export const HierarchicalModel = [
     data: {
       label: 'Deploy',
     },
-    children: [
-      {
-        id: 'deployment',
-        data: {
-          label: 'Deployment',
-        },
-      },
-    ],
+  },
+  {
+    id: 'deployment',
+    data: {
+      label: 'Deployment',
+    },
+    parentId: 'deployment'
   },
   {
     id: 'dynamic-analysis',
@@ -85,14 +85,13 @@ export const HierarchicalModel = [
     data: {
       label: 'Dynamic Analysis',
     },
-    children: [
-      {
-        id: 'dast',
-        data: {
-          label: 'DAST',
-        },
-      },
-    ],
+  },
+  {
+    id: 'dast',
+    data: {
+      label: 'DAST',
+    },
+    parentId: 'dynamic-analysis'
   },
   {
     id: 'end',

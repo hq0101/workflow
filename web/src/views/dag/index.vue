@@ -94,6 +94,7 @@ export default {
       getNodeSize,
       jointEdgeConnectorType: "CENTER_OF_BORDER",
       editable: true,
+      modelType: 'FLATTEN',
     });
     const onScaleChange = () => {
       niceDagReactive.use().setScale(scale.value / 100);
@@ -132,9 +133,13 @@ export default {
         niceDag
           .center({
             width: bounds.width,
-            height: 400,
+            height: bounds.height,
           })
           .startEditing();
+        // niceDag
+        //   .center({
+        //   })
+        //   .startEditing();
       }
     });
 
